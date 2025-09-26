@@ -1,3 +1,4 @@
+//! Модуль загрузки и парсинга конфигурации `ginpee.toml`.
 use serde::Deserialize;
 use std::fs;
 use std::path::Path;

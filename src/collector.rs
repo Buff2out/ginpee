@@ -1,3 +1,4 @@
+//! Модуль сбора файлов с учётом `.gpskip` и фильтров.
 use glob::Pattern;
 use ignore::WalkBuilder;
 use std::path::{Path, PathBuf};

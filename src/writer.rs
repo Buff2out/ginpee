@@ -1,3 +1,4 @@
+//! Модуль записи результата в `project.md`.
 use std::fs::File;
 use std::io::{BufWriter, Write};
 

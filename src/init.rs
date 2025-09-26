@@ -1,3 +1,4 @@
+//! Модуль инициализации: создание `ginpee.toml` и `.gpskip`.
 use std::fs;
 use std::path::Path;
 

@@ -1,8 +1,16 @@
+//! `ginpee` — утилита для генерации `project.md` с деревом файлов и их содержимым.
+//!
+//! ## Примеры:
+//!
+//! ```bash
+//! ginpee init
+//! ginpee run --output docs.md
+//! ```
 mod config;
 mod collector;
 mod formatter;
-mod writer;
 mod init;
+mod writer;
 
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
@@ -23,7 +31,7 @@ enum Commands {
         force: bool,
     },
     /// Generate project.md
-    Generate {
+    Run {
         /// Output file (default: project.md)
         #[arg(short, long, default_value = "project.md")]
         output: PathBuf,
@@ -53,7 +61,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Commands::Init { force } => {
             init::run(force)?;
         }
-        Commands::Generate { output, top, down, files, config } => {
+        Commands::Run { output, top, down, files, config } => {
             let config = config::load(&config).unwrap_or_default();
 
             let top = top.or_else(|| config.top.map(|c| c.text));
