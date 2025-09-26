@@ -10,6 +10,9 @@ pub fn collect_files(
 ) -> Result<Vec<PathBuf>, Box<dyn std::error::Error>> {
     let mut walker = WalkBuilder::new(base_path);
     walker.add_custom_ignore_filename(ignore_file);
+    walker.git_ignore(false);  // отключает .gitignore
+    walker.git_global(false);  // отключает ~/.gitignore_global
+    walker.git_exclude(false); // отключает .git/info/exclude
     let walker = walker.build();
 
     let mut files = Vec::new();
@@ -18,10 +21,7 @@ pub fn collect_files(
         let entry = result?;
         let path = entry.path();
 
-        if path.is_dir() {
-            eprintln!("Dir: {:?}", path);
-        } else if path.is_file() {
-            eprintln!("File: {:?}", path);
+        if path.is_file() {
             if include_patterns.is_empty() {
                 files.push(path.to_path_buf());
             } else {
