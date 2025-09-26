@@ -17,7 +17,7 @@ pub fn build_tree_and_content(
     for file_path in files {
         let relative_path = file_path.strip_prefix(base_path)?;
         let path_str = relative_path.to_string_lossy().replace('\\', "/"); // для Windows
-        tree.push_str(&format!("├── {}\n", path_str));
+        tree.push_str(&format!("{}\n", path_str));
 
         let content = fs::read_to_string(file_path)?;
         contents.push(FileContent {
