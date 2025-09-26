@@ -12,3 +12,7 @@ serde = { version = "1.0", features = ["derive"] }
 
 [dev-dependencies]
 tempfile = "3.23"
+
+[[bin]]
+name = "ginpee"
+path = "src/main.rs"

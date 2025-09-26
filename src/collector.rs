@@ -18,7 +18,10 @@ pub fn collect_files(
         let entry = result?;
         let path = entry.path();
 
-        if path.is_file() {
+        if path.is_dir() {
+            eprintln!("Dir: {:?}", path);
+        } else if path.is_file() {
+            eprintln!("File: {:?}", path);
             if include_patterns.is_empty() {
                 files.push(path.to_path_buf());
             } else {
