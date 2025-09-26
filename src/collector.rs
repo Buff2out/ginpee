@@ -10,30 +10,29 @@ pub fn collect_files(
 ) -> Result<Vec<PathBuf>, Box<dyn std::error::Error>> {
     let mut walker = WalkBuilder::new(base_path);
     walker.add_custom_ignore_filename(ignore_file);
-    walker.git_ignore(false);  // отключает .gitignore
-    walker.git_global(false);  // отключает ~/.gitignore_global
-    walker.git_exclude(false); // отключает .git/info/exclude
+    walker.git_ignore(false);
+    walker.git_global(false);
+    walker.git_exclude(false);
     let walker = walker.build();
 
-    let mut files = Vec::new();
+    let patterns: Result<Vec<_>, _> = include_patterns.iter()
+        .map(|s| Pattern::new(s))
+        .collect();
 
-    for result in walker {
-        let entry = result?;
-        let path = entry.path();
+    let patterns = patterns?;
 
-        if path.is_file() {
-            if include_patterns.is_empty() {
-                files.push(path.to_path_buf());
+    let files: Vec<_> = walker
+        .filter_map(|result| result.ok())
+        .filter(|entry| entry.path().is_file())
+        .filter(|entry| {
+            if patterns.is_empty() {
+                true
             } else {
-                for pattern in include_patterns {
-                    if Pattern::new(pattern)?.matches_path(path) {
-                        files.push(path.to_path_buf());
-                        break;
-                    }
-                }
+                patterns.iter().any(|p| p.matches_path(entry.path()))
             }
-        }
-    }
+        })
+        .map(|entry| entry.path().to_path_buf())
+        .collect();
 
     Ok(files)
 }
