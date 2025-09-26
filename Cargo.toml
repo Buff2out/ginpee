@@ -9,3 +9,6 @@ toml = "0.9"
 ignore = "0.4"
 glob = "0.3"
 serde = { version = "1.0", features = ["derive"] }
+
+[dev-dependencies]
+tempfile = "3.23"
