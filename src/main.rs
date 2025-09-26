@@ -25,8 +25,8 @@ struct Cli {
     #[arg(long)]
     files: Vec<String>,
 
-    /// Path to config file (default: geenpee.toml)
-    #[arg(long, default_value = "geenpee.toml")]
+    /// Path to config file (default: ginpee.toml)
+    #[arg(long, default_value = "ginpee.toml")]
     config: PathBuf,
 }
 
@@ -44,7 +44,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     let base_path = std::env::current_dir()?;
-    let collected_files = collector::collect_files(&base_path, &files, ".gpignore")?;
+    let collected_files = collector::collect_files(&base_path, &files, ".gpskip")?;
 
     let (tree, contents) = formatter::build_tree_and_content(&collected_files, &base_path)?;
 

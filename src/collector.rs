@@ -48,7 +48,7 @@ mod tests {
         fs::write(&file1, "// test").unwrap();
         fs::write(&file2, "# Readme").unwrap();
 
-        let files = collect_files(temp_dir.path(), &["*.rs".to_string()], ".gpignore").unwrap();
+        let files = collect_files(temp_dir.path(), &["*.rs".to_string()], ".gpskip").unwrap();
         assert_eq!(files.len(), 1);
         assert!(files[0].ends_with("main.rs"));
     }

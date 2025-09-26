@@ -177,18 +177,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "37909eebbb50d72f9059c3b6d82c0463f2ff062c9e95845c43a6c9c0355411be"
 
 [[package]]
-name = "geenpee"
-version = "0.1.0"
-dependencies = [
- "clap",
- "glob",
- "ignore",
- "serde",
- "tempfile",
- "toml",
-]
-
-[[package]]
 name = "getrandom"
 version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -198,6 +186,18 @@ dependencies = [
  "libc",
  "r-efi",
  "wasi",
+]
+
+[[package]]
+name = "ginpee"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "glob",
+ "ignore",
+ "serde",
+ "tempfile",
+ "toml",
 ]
 
 [[package]]
