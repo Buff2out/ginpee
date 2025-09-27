@@ -23,17 +23,10 @@ pub fn collect_files(
 
     let files: Vec<_> = walker
         .filter_map(|result| result.ok())
+        .filter(|entry| entry.path().is_file())
         .filter(|entry| {
-            eprintln!("File found: {:?}", entry);
-            entry.path().is_file()
-        })
-        .filter(|entry| {
-            eprintln!("Trying pattern: {:?} on path: {:?}", patterns, entry);
-            if patterns.is_empty() {
-                true
-            } else {
-                patterns.iter().any(|p| p.matches_path(entry.path()))
-            }
+            let relative_path = entry.path().strip_prefix(base_path).unwrap();
+            patterns.iter().any(|p| p.matches_path(relative_path))
         })
         .map(|entry| entry.path().to_path_buf())
         .collect();
