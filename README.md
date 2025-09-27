@@ -49,7 +49,7 @@ text = "Текст сверху"
 text = "Текст снизу"
 
 [files]
-include = [".с", "*.h", "Makefile", "*.py"]
+include = ["*.с", "*.h", "Makefile", "*.py"]
 ```
 
 ## Игнорирование
