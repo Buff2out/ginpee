@@ -1,0 +1,16 @@
+
+.git/
+.vscode/
+.idea/
+target/
+build/
+dist/
+node_modules/
+*.log
+*.tmp
+*.swp
+*.bak
+.DS_Store
+Thumbs.db
+/target
+project.md

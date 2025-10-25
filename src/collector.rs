@@ -1,32 +1,31 @@
 //! Модуль сбора файлов с учётом `.gpskip` и фильтров.
-use glob::Pattern;
 use ignore::WalkBuilder;
 use std::path::{Path, PathBuf};
+use globset::{Glob, GlobSetBuilder};
 
 pub fn collect_files(
     base_path: &Path,
     include_patterns: &[String],
     ignore_file: &str,
 ) -> Result<Vec<PathBuf>, Box<dyn std::error::Error>> {
+    let mut builder = GlobSetBuilder::new();
+    for pattern in include_patterns {
+        builder.add(Glob::new(pattern)?);
+    }
+    let globset = builder.build()?;
+
     let mut walker = WalkBuilder::new(base_path);
     walker.add_custom_ignore_filename(ignore_file);
     walker.git_ignore(false);
     walker.git_global(false);
     walker.git_exclude(false);
-    let walker = walker.build();
 
-    let patterns: Result<Vec<_>, _> = include_patterns.iter()
-        .map(|s| Pattern::new(s))
-        .collect();
-
-    let patterns = patterns?;
-
-    let files: Vec<_> = walker
+    let files: Vec<_> = walker.build()
         .filter_map(|result| result.ok())
         .filter(|entry| entry.path().is_file())
         .filter(|entry| {
             let relative_path = entry.path().strip_prefix(base_path).unwrap();
-            patterns.iter().any(|p| p.matches_path(relative_path))
+            globset.is_match(relative_path)
         })
         .map(|entry| entry.path().to_path_buf())
         .collect();
