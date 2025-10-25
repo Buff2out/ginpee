@@ -76,17 +76,21 @@ mod tests {
     #[test]
     fn test_init_creates_files() {
         let temp_dir = TempDir::new().unwrap();
+        let original_dir = std::env::current_dir().unwrap();
         std::env::set_current_dir(temp_dir.path()).unwrap();
 
         run(false).unwrap();
 
         assert!(Path::new("ginpee.toml").exists());
         assert!(Path::new(".gpskip").exists());
+
+        std::env::set_current_dir(original_dir).unwrap();
     }
 
     #[test]
     fn test_init_with_gitignore() {
         let temp_dir = TempDir::new().unwrap();
+        let original_dir = std::env::current_dir().unwrap();
         std::env::set_current_dir(temp_dir.path()).unwrap();
 
         fs::write(".gitignore", "node_modules/\n*.tmp").unwrap();
@@ -95,5 +99,7 @@ mod tests {
         let gpskip = fs::read_to_string(".gpskip").unwrap();
         assert!(gpskip.contains("node_modules/"));
         assert!(gpskip.contains("*.tmp"));
+
+        std::env::set_current_dir(original_dir).unwrap();
     }
 }
